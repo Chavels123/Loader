@@ -7,6 +7,7 @@ local SCRIPTS = {
     [6348640020] = "fa4e49b11535d5a034b51e9bfd716abf",
     [6137321701] = "fa4e49b11535d5a034b51e9bfd716abf",
     [8260276694] = "963cec62def32b2419a935d99b45f1cc",
+    [1962086868] = "8e7abd0fcb7f8875ca7597970efa4803",
 }
 
 if not SCRIPTS[game.PlaceId] then
