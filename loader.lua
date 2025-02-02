@@ -1,166 +1,376 @@
-local Key = isfile("PulseHub/key.save") and readfile("PulseHub/key.save") or ""
-
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 
-local SCRIPTS = {
-    [6348640020] = "fa4e49b11535d5a034b51e9bfd716abf",
-    [6137321701] = "fa4e49b11535d5a034b51e9bfd716abf",
-    [8260276694] = "963cec62def32b2419a935d99b45f1cc",
-    [4623386862] = "6e17bb33ce19a54874ef18805c1c4dad",
-    [1962086868] = "9abaceaa22f3631d6dd3a9c9420cf349",
-}
+local GUI = Instance.new("ScreenGui")
+GUI.Name = HttpService:GenerateGUID(false)
+GUI.Parent = CoreGui
+GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-if not SCRIPTS[game.PlaceId] then
-    LocalPlayer:Kick("Hello, " .. LocalPlayer.Name .. "! currently, this game is not supported by Pulse Hub")
-    return
-end
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Parent = GUI
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0, 300, 0, 350)
+Main.ClipsDescendants = true
 
-local function loadScript()
-    script_key = Key
-    local scriptURL = "https://api.luarmor.net/files/v3/loaders/" .. SCRIPTS[game.PlaceId] .. ".lua"
-    loadstring(game:HttpGet(scriptURL))()
-    Fluent:Destroy()
-    script:Destroy()
-end
-
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-
-local Window = Fluent:CreateWindow({
-    Title = "Pulse Hub",
-    SubTitle = "Authentication",
-    Theme = "Dark",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(15, 15, 15)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 25))
 })
+UIGradient.Rotation = 45
+UIGradient.Parent = Main
 
-local Tabs = {
-    KeySystem = Window:AddTab({ Title = "Key System", Icon = "key" }),
-    Discord = Window:AddTab({ Title = "Discord", Icon = "link" }),
-    Information = Window:AddTab({ Title = "Information", Icon = "info" })
-}
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = Main
 
-do
-    local KeySection = Tabs.KeySystem:AddSection("Authentication")
-    
-    Tabs.KeySystem:AddInput("Key", {
-        Title = "Enter Key",
-        Default = Key,
-        Placeholder = "Paste your key here...",
-        Callback = function(value)
-            Key = value
-            script_key = value
-            Fluent:Notify({
-                Title = "Key System",
-                Content = "Key has been entered",
-                Duration = 3
-            })
-        end
+local Shadow = Instance.new("ImageLabel")
+Shadow.Name = "Shadow"
+Shadow.Parent = Main
+Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+Shadow.BackgroundTransparency = 1
+Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+Shadow.Size = UDim2.new(1, 47, 1, 47)
+Shadow.ZIndex = 0
+Shadow.Image = "rbxassetid://6014261993"
+Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Shadow.ImageTransparency = 0.5
+Shadow.ScaleType = Enum.ScaleType.Slice
+Shadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Parent = Main
+TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+
+local UICorner_2 = Instance.new("UICorner")
+UICorner_2.CornerRadius = UDim.new(0, 8)
+UICorner_2.Parent = TopBar
+
+local Extension = Instance.new("Frame")
+Extension.Name = "Extension"
+Extension.Parent = TopBar
+Extension.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Extension.BorderSizePixel = 0
+Extension.Position = UDim2.new(0, 0, 0.5, 0)
+Extension.Size = UDim2.new(1, 0, 0.5, 0)
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 12, 0, 0)
+Title.Size = UDim2.new(1, -24, 1, 0)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "PulseHub"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 14
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "Close"
+CloseButton.Parent = TopBar
+CloseButton.BackgroundTransparency = 1
+CloseButton.Position = UDim2.new(1, -25, 0, 0)
+CloseButton.Size = UDim2.new(0, 25, 1, 0)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+CloseButton.TextSize = 20
+
+local Logo = Instance.new("ImageLabel")
+Logo.Name = "Logo"
+Logo.Parent = Main
+Logo.BackgroundTransparency = 1
+Logo.Position = UDim2.new(0.5, -50, 0, 50)
+Logo.Size = UDim2.new(0, 100, 0, 100)
+Logo.Image = Players.LocalPlayer.CharacterAppearanceId and "rbxthumb://type=AvatarHeadShot&id=" .. Players.LocalPlayer.UserId .. "&w=150&h=150" or "rbxasset://textures/ui/GuiImagePlaceholder.png"
+Logo.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+
+local LogoCorner = Instance.new("UICorner")
+LogoCorner.CornerRadius = UDim.new(1, 0)
+LogoCorner.Parent = Logo
+
+local KeyInput = Instance.new("TextBox")
+KeyInput.Name = "KeyInput"
+KeyInput.Parent = Main
+KeyInput.AnchorPoint = Vector2.new(0.5, 0)
+KeyInput.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+KeyInput.Position = UDim2.new(0.5, 0, 0, 170)
+KeyInput.Size = UDim2.new(0.85, 0, 0, 40)
+KeyInput.Font = Enum.Font.GothamSemibold
+KeyInput.PlaceholderText = "Enter Key..."
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.TextSize = 14
+KeyInput.ClearTextOnFocus = false
+
+local UICorner_3 = Instance.new("UICorner")
+UICorner_3.CornerRadius = UDim.new(0, 6)
+UICorner_3.Parent = KeyInput
+
+local UIGradient_2 = Instance.new("UIGradient")
+UIGradient_2.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 25)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(30, 30, 30))
+})
+UIGradient_2.Rotation = 45
+UIGradient_2.Parent = KeyInput
+
+local SubmitKey = Instance.new("TextButton")
+SubmitKey.Name = "SubmitKey"
+SubmitKey.Parent = Main
+SubmitKey.AnchorPoint = Vector2.new(0.5, 0)
+SubmitKey.BackgroundColor3 = Color3.fromRGB(0, 72, 255)
+SubmitKey.Position = UDim2.new(0.5, 0, 0, 230)
+SubmitKey.Size = UDim2.new(0.85, 0, 0, 40)
+SubmitKey.Font = Enum.Font.GothamBold
+SubmitKey.Text = "Submit Key"
+SubmitKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitKey.TextSize = 14
+SubmitKey.AutoButtonColor = false
+
+local UICorner_4 = Instance.new("UICorner")
+UICorner_4.CornerRadius = UDim.new(0, 6)
+UICorner_4.Parent = SubmitKey
+
+local UIGradient_3 = Instance.new("UIGradient")
+UIGradient_3.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 72, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 102, 255))
+})
+UIGradient_3.Rotation = 45
+UIGradient_3.Parent = SubmitKey
+
+local GetKey = Instance.new("TextButton")
+GetKey.Name = "GetKey"
+GetKey.Parent = Main
+GetKey.AnchorPoint = Vector2.new(0.5, 0)
+GetKey.BackgroundTransparency = 1
+GetKey.Position = UDim2.new(0.5, 0, 0, 290)
+GetKey.Size = UDim2.new(0.85, 0, 0, 20)
+GetKey.Font = Enum.Font.GothamBold
+GetKey.Text = "Get Key"
+GetKey.TextColor3 = Color3.fromRGB(150, 150, 150)
+GetKey.TextSize = 14
+GetKey.AutoButtonColor = false
+
+local LinkvertiseButton = Instance.new("TextButton")
+LinkvertiseButton.Name = "Linkvertise"
+LinkvertiseButton.Parent = Main
+LinkvertiseButton.AnchorPoint = Vector2.new(0.5, 0)
+LinkvertiseButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+LinkvertiseButton.Position = UDim2.new(0.3, 0, 0, 315)
+LinkvertiseButton.Size = UDim2.new(0.4, 0, 0, 30)
+LinkvertiseButton.Font = Enum.Font.GothamBold
+LinkvertiseButton.Text = "Linkvertise"
+LinkvertiseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+LinkvertiseButton.TextSize = 13
+LinkvertiseButton.AutoButtonColor = false
+LinkvertiseButton.BackgroundTransparency = 1
+LinkvertiseButton.TextTransparency = 1
+
+local UICorner_5 = Instance.new("UICorner")
+UICorner_5.CornerRadius = UDim.new(0, 6)
+UICorner_5.Parent = LinkvertiseButton
+
+local LootlabsButton = Instance.new("TextButton")
+LootlabsButton.Name = "Lootlabs"
+LootlabsButton.Parent = Main
+LootlabsButton.AnchorPoint = Vector2.new(0.5, 0)
+LootlabsButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+LootlabsButton.Position = UDim2.new(0.7, 0, 0, 315)
+LootlabsButton.Size = UDim2.new(0.4, 0, 0, 30)
+LootlabsButton.Font = Enum.Font.GothamBold
+LootlabsButton.Text = "Lootlabs"
+LootlabsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+LootlabsButton.TextSize = 13
+LootlabsButton.AutoButtonColor = false
+LootlabsButton.BackgroundTransparency = 1
+LootlabsButton.TextTransparency = 1
+
+local UICorner_6 = Instance.new("UICorner")
+UICorner_6.CornerRadius = UDim.new(0, 6)
+UICorner_6.Parent = LootlabsButton
+
+local KeySystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/Chavels123/Newloader/refs/heads/main/KeyModuless.lua"))()
+KeySystem.MainWindow = GUI
+KeySystem.Notify = function(options)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = options.Title,
+        Text = options.Content,
+        Duration = options.Duration
     })
+end
 
-    local function saveAndLoadScript()
-        if not isfolder("PulseHub") then
-            makefolder("PulseHub")
-        end
-        writefile("PulseHub/key.save", Key)
-        loadScript()
+local function CheckKey(key)
+    KeySystem.Functions.CheckKey(key)
+end
+
+local function AddHoverEffect(button, colorStart, colorEnd)
+    if button == GetKey then
+        button.MouseEnter:Connect(function()
+            TweenService:Create(button, TweenInfo.new(0.2), {
+                TextColor3 = Color3.fromRGB(200, 200, 200)
+            }):Play()
+        end)
+        
+        button.MouseLeave:Connect(function()
+            TweenService:Create(button, TweenInfo.new(0.2), {
+                TextColor3 = Color3.fromRGB(150, 150, 150)
+            }):Play()
+        end)
+    else
+        local gradient = button:FindFirstChild("UIGradient")
+        
+        button.MouseEnter:Connect(function()
+            TweenService:Create(gradient, TweenInfo.new(0.2), {
+                Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, colorStart:Lerp(Color3.fromRGB(255, 255, 255), 0.1)),
+                    ColorSequenceKeypoint.new(1, colorEnd:Lerp(Color3.fromRGB(255, 255, 255), 0.1))
+                })
+            }):Play()
+        end)
+        
+        button.MouseLeave:Connect(function()
+            TweenService:Create(gradient, TweenInfo.new(0.2), {
+                Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, colorStart),
+                    ColorSequenceKeypoint.new(1, colorEnd)
+                })
+            }):Play()
+        end)
     end
+end
 
-    Tabs.KeySystem:AddButton({
-        Title = "Get Key (Linkvertise)",
-        Description = "Click to get a new key",
-        Callback = function()
-            setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Checkpoint-EZwqJKYLjCoC")
-            Fluent:Notify({
-                Title = "Link Copied!",
-                Content = "Open the link in your browser to get your key",
-                Duration = 5,
-                Image = "check"
-            })
-        end
+AddHoverEffect(SubmitKey, Color3.fromRGB(0, 72, 255), Color3.fromRGB(0, 102, 255))
+AddHoverEffect(GetKey)
+
+local function AddButtonHoverEffect(button)
+    button.MouseEnter:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        }):Play()
+    end)
+    
+    button.MouseLeave:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {
+            BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+        }):Play()
+    end)
+end
+
+AddButtonHoverEffect(LinkvertiseButton)
+AddButtonHoverEffect(LootlabsButton)
+
+CloseButton.MouseEnter:Connect(function()
+    TweenService:Create(CloseButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+end)
+
+CloseButton.MouseLeave:Connect(function()
+    TweenService:Create(CloseButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(200, 200, 200)}):Play()
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    GUI:Destroy()
+end)
+
+SubmitKey.MouseButton1Click:Connect(function()
+    TweenService:Create(SubmitKey, TweenInfo.new(0.1), {Size = UDim2.new(0.83, 0, 0, 38)}):Play()
+    wait(0.1)
+    TweenService:Create(SubmitKey, TweenInfo.new(0.1), {Size = UDim2.new(0.85, 0, 0, 40)}):Play()
+    CheckKey(KeyInput.Text)
+end)
+
+GetKey.MouseButton1Click:Connect(function()
+    TweenService:Create(GetKey, TweenInfo.new(0.3), {
+        TextTransparency = 1
+    }):Play()
+    
+    wait(0.2)
+    
+    LinkvertiseButton.Position = UDim2.new(0.3, 0, 0, 325)
+    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.4, Enum.EasingStyle.Back), {
+        BackgroundTransparency = 0,
+        TextTransparency = 0,
+        Position = UDim2.new(0.3, 0, 0, 315)
+    }):Play()
+    
+    LootlabsButton.Position = UDim2.new(0.7, 0, 0, 325)
+    TweenService:Create(LootlabsButton, TweenInfo.new(0.4, Enum.EasingStyle.Back), {
+        BackgroundTransparency = 0,
+        TextTransparency = 0,
+        Position = UDim2.new(0.7, 0, 0, 315)
+    }):Play()
+end)
+
+LinkvertiseButton.MouseButton1Click:Connect(function()
+    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.1), {Size = UDim2.new(0.38, 0, 0, 28)}):Play()
+    wait(0.1)
+    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.1), {Size = UDim2.new(0.4, 0, 0, 30)}):Play()
+    setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Checkpoint-EZwqJKYLjCoC")
+    KeySystem.Notify({
+        Title = "Link Copied",
+        Content = "Linkvertise link copied to clipboard",
+        Duration = 5
     })
+end)
 
-    Tabs.KeySystem:AddButton({
-        Title = "Login",
-        Description = "Authenticate with your key",
-        Callback = function()
-            if Key and Key ~= "" then
-                Window:Dialog({
-                    Title = "Key Authentication",
-                    Content = "Your key has been detected! Would you like to save this key for automatic login next time?",
-                    Buttons = {
-                        {
-                            Title = "Yes, Save Key",
-                            Callback = saveAndLoadScript
-                        },
-                        {
-                            Title = "No, Just Login",
-                            Callback = loadScript
-                        }
-                    }
-                })
-            else
-                Fluent:Notify({
-                    Title = "Authentication Failed",
-                    Content = "Please enter a valid key before attempting to login",
-                    Duration = 5
-                })
+LootlabsButton.MouseButton1Click:Connect(function()
+    TweenService:Create(LootlabsButton, TweenInfo.new(0.1), {Size = UDim2.new(0.38, 0, 0, 28)}):Play()
+    wait(0.1)
+    TweenService:Create(LootlabsButton, TweenInfo.new(0.1), {Size = UDim2.new(0.4, 0, 0, 30)}):Play()
+    setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Lootlabs-fPAKoXWIfHvf")
+    KeySystem.Notify({
+        Title = "Link Copied",
+        Content = "Lootlabs link copied to clipboard",
+        Duration = 5
+    })
+end)
+
+local UserInputService = game:GetService("UserInputService")
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    local goal = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    TweenService:Create(Main, TweenInfo.new(0.1), {Position = goal}):Play()
+end
+
+TopBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Main.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
             end
-        end
-    })
-end
+        end)
+    end
+end)
 
-do
-    local DiscordSection = Tabs.Discord:AddSection("Community")
-    
-    Tabs.Discord:AddButton({
-        Title = "Join Discord",
-        Description = "Click to copy Discord invite link",
-        Callback = function()
-            setclipboard("https://discord.gg/5UPBtm7KW6")
-            Fluent:Notify({
-                Title = "Discord Link Copied!",
-                Content = "Join our community for support and updates",
-                Duration = 5,
-                Image = "check"
-            })
-        end
-    })
-end
+TopBar.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
 
-do
-    local InfoSection = Tabs.Information:AddSection("Script Information")
-    
-    Tabs.Information:AddParagraph({
-        Title = "Current Version",
-        Content = "v1.0.0"
-    })
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
 
-    Tabs.Information:AddParagraph({
-        Title = "Last Updated",
-        Content = "Jan 2025"
-    })
-
-    Tabs.Information:AddParagraph({
-        Title = "Supported Games",
-        Content = [[
-• Blair
-• BABFT
-• And more!]]
-    })
-end
-
-if Key ~= "" then
-    Fluent:Notify({
-        Title = "Automatic Login",
-        Content = "A saved key has been detected! You can now login or get a new key.",
-        Duration = 5
-    })
-else
-    Fluent:Notify({
-        Title = "Welcome to Pulse Hub",
-        Content = "Please obtain and enter your key to access the script",
-        Duration = 5
-    })
-end
+Main.Position = UDim2.new(0.5, 0, 0.5, -50)
+TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Bounce), {Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
