@@ -161,44 +161,6 @@ GetKey.TextColor3 = Color3.fromRGB(150, 150, 150)
 GetKey.TextSize = 14
 GetKey.AutoButtonColor = false
 
-local LinkvertiseButton = Instance.new("TextButton")
-LinkvertiseButton.Name = "Linkvertise"
-LinkvertiseButton.Parent = Main
-LinkvertiseButton.AnchorPoint = Vector2.new(0.5, 0)
-LinkvertiseButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-LinkvertiseButton.Position = UDim2.new(0.3, 0, 0, 315)
-LinkvertiseButton.Size = UDim2.new(0.4, 0, 0, 30)
-LinkvertiseButton.Font = Enum.Font.GothamBold
-LinkvertiseButton.Text = "Linkvertise"
-LinkvertiseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-LinkvertiseButton.TextSize = 13
-LinkvertiseButton.AutoButtonColor = false
-LinkvertiseButton.BackgroundTransparency = 1
-LinkvertiseButton.TextTransparency = 1
-
-local UICorner_5 = Instance.new("UICorner")
-UICorner_5.CornerRadius = UDim.new(0, 6)
-UICorner_5.Parent = LinkvertiseButton
-
-local LootlabsButton = Instance.new("TextButton")
-LootlabsButton.Name = "Lootlabs"
-LootlabsButton.Parent = Main
-LootlabsButton.AnchorPoint = Vector2.new(0.5, 0)
-LootlabsButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-LootlabsButton.Position = UDim2.new(0.7, 0, 0, 315)
-LootlabsButton.Size = UDim2.new(0.4, 0, 0, 30)
-LootlabsButton.Font = Enum.Font.GothamBold
-LootlabsButton.Text = "Lootlabs"
-LootlabsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-LootlabsButton.TextSize = 13
-LootlabsButton.AutoButtonColor = false
-LootlabsButton.BackgroundTransparency = 1
-LootlabsButton.TextTransparency = 1
-
-local UICorner_6 = Instance.new("UICorner")
-UICorner_6.CornerRadius = UDim.new(0, 6)
-UICorner_6.Parent = LootlabsButton
-
 local KeySystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/Chavels123/Newloader/refs/heads/main/KeyModuless.lua"))()
 KeySystem.MainWindow = GUI
 KeySystem.Notify = function(options)
@@ -266,8 +228,7 @@ local function AddButtonHoverEffect(button)
     end)
 end
 
-AddButtonHoverEffect(LinkvertiseButton)
-AddButtonHoverEffect(LootlabsButton)
+AddButtonHoverEffect(GetKey)
 
 CloseButton.MouseEnter:Connect(function()
     TweenService:Create(CloseButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
@@ -289,47 +250,10 @@ SubmitKey.MouseButton1Click:Connect(function()
 end)
 
 GetKey.MouseButton1Click:Connect(function()
-    TweenService:Create(GetKey, TweenInfo.new(0.3), {
-        TextTransparency = 1
-    }):Play()
-    
-    wait(0.2)
-    
-    LinkvertiseButton.Position = UDim2.new(0.3, 0, 0, 325)
-    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.4, Enum.EasingStyle.Back), {
-        BackgroundTransparency = 0,
-        TextTransparency = 0,
-        Position = UDim2.new(0.3, 0, 0, 315)
-    }):Play()
-    
-    LootlabsButton.Position = UDim2.new(0.7, 0, 0, 325)
-    TweenService:Create(LootlabsButton, TweenInfo.new(0.4, Enum.EasingStyle.Back), {
-        BackgroundTransparency = 0,
-        TextTransparency = 0,
-        Position = UDim2.new(0.7, 0, 0, 315)
-    }):Play()
-end)
-
-LinkvertiseButton.MouseButton1Click:Connect(function()
-    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.1), {Size = UDim2.new(0.38, 0, 0, 28)}):Play()
-    wait(0.1)
-    TweenService:Create(LinkvertiseButton, TweenInfo.new(0.1), {Size = UDim2.new(0.4, 0, 0, 30)}):Play()
     setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Checkpoint-EZwqJKYLjCoC")
     KeySystem.Notify({
         Title = "Link Copied",
-        Content = "Linkvertise link copied to clipboard",
-        Duration = 5
-    })
-end)
-
-LootlabsButton.MouseButton1Click:Connect(function()
-    TweenService:Create(LootlabsButton, TweenInfo.new(0.1), {Size = UDim2.new(0.38, 0, 0, 28)}):Play()
-    wait(0.1)
-    TweenService:Create(LootlabsButton, TweenInfo.new(0.1), {Size = UDim2.new(0.4, 0, 0, 30)}):Play()
-    setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Lootlabs-fPAKoXWIfHvf")
-    KeySystem.Notify({
-        Title = "Link Copied",
-        Content = "Lootlabs link copied to clipboard",
+        Content = "Key system link copied to clipboard",
         Duration = 5
     })
 end)
