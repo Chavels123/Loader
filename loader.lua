@@ -250,7 +250,7 @@ SubmitKey.MouseButton1Click:Connect(function()
 end)
 
 GetKey.MouseButton1Click:Connect(function()
-    setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Checkpoint-EZwqJKYLjCoC")
+    setclipboard("https://ads.luarmor.net/get_key?for=Pulse_Hub_Checkpoint-TxLYDUUMfNao")
     KeySystem.Notify({
         Title = "Link Copied",
         Content = "Key system link copied to clipboard",
