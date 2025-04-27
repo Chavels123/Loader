@@ -12,7 +12,7 @@ local GameIds = {
     [18199615050] = "Demonology [Lobby]",
     [18794863104] = "Demonology [Game]",
     [8260276694] = "Ability Wars",
-
+    [13772394625] = "Blade Ball [BETA]",
 }
 
 GameName = GameIds[game.PlaceId] or "Universal"
