@@ -15,6 +15,8 @@ local GameIds = {
     [14518422161] = "Gunfight Arena [BETA]",
     [8267733039] = "Specter [Lobby]",
     [8417221956] = "Specter [GAME]",
+    [79546208627805] = "99 Night in the forest [LOBBY]",
+    [126509999114328] = "99 Night in the forest [GAME]"
 }
 
 GameName = GameIds[game.PlaceId] or "Universal"
