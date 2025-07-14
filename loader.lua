@@ -183,11 +183,11 @@ KeySystemTab:CreateDivider()
 local GetKeySection = KeySystemTab:CreateSection("Get Key Options")
 
 local GetKeyLinkvertiseButton = KeySystemTab:CreateButton({
-    Name = "Get Key (Linkvertise)",
+    Name = "Get Key (Fly inc)",
     Callback = function()
         Rayfield:Notify({
-            Title = "Generating Linkvertise Link",
-            Content = "Creating key link via Linkvertise...",
+            Title = "Generating Fly inc Link",
+            Content = "Creating key link via Fly inc...",
             Duration = 2,
             Image = "link",
         })
@@ -213,20 +213,20 @@ local GetKeyLinkvertiseButton = KeySystemTab:CreateButton({
 })
 
 local GetKeyLootlabsButton = KeySystemTab:CreateButton({
-    Name = "Get Key (Lootlabs)",
+    Name = "Get Key (Wat)",
     Callback = function()
         local playerName = Players.LocalPlayer.DisplayName or Players.LocalPlayer.Name
         
         Rayfield:Notify({
             Title = "Lootlabs Unavailable",
-            Content = "Hello " .. playerName .. "! Thanks for selecting Lootlabs, but it's currently unavailable. We'll be implementing Lootlabs support soon! Thanks for your patience.",
+            Content = "Hello " .. playerName .. "! Thanks for selecting Wat, but it's currently unavailable. We'll be implementing Wat support soon! Thanks for your patience.",
             Duration = 8,
             Image = "construction",
         })
         
         game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "PulseHub - Lootlabs",
-            Text = "Hello " .. playerName .. "! Lootlabs is coming soon. Please use Linkvertise for now.",
+            Title = "PulseHub - Wat",
+            Text = "Hello " .. playerName .. "! Wat is coming soon. Please use Linkvertise for now.",
             Duration = 6
         })
     end,
