@@ -186,11 +186,11 @@ KeySystemTab:CreateDivider()
 local GetKeySection = KeySystemTab:CreateSection("Get Key Options")
 
 local GetKeyLinkvertiseButton = KeySystemTab:CreateButton({
-    Name = "Get Key (Fly inc)",
+    Name = "Get Key (Linkvertise)",
     Callback = function()
         Rayfield:Notify({
-            Title = "Generating Fly inc Link",
-            Content = "Creating key link via Fly inc...",
+            Title = "Generating LinkvertiseLink",
+            Content = "Creating key link via Linkvertise...",
             Duration = 2,
             Image = "link",
         })
