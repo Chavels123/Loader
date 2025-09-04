@@ -186,11 +186,11 @@ KeySystemTab:CreateDivider()
 local GetKeySection = KeySystemTab:CreateSection("Get Key Options")
 
 local GetKeyLinkvertiseButton = KeySystemTab:CreateButton({
-    Name = "Get Key (Free limited time)",
+    Name = "Get Key (Lockr.so)",
     Callback = function()
         Rayfield:Notify({
             Title = "Generating Link",
-            Content = "Creating key link via Link...",
+            Content = "Creating key link via Lockr.so...",
             Duration = 2,
             Image = "link",
         })
