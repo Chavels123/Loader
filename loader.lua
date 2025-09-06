@@ -105,6 +105,72 @@ local InfoTab = Window:CreateTab("Info", "info")
 local keyInputValue = ""
 local isKeyValid = false
 
+local isBlair = (game.PlaceId == 6137321701) or (game.PlaceId == 6348640020)
+if isBlair then
+    local VersionSection = KeySystemTab:CreateSection("Version")
+    local VersionDropdown = KeySystemTab:CreateDropdown({
+        Name = "Select Version",
+        Options = {"Stable Version","BETA Version"},
+        CurrentOption = {"Stable Version"},
+        MultipleOptions = false,
+        Flag = "PulseHub_Version",
+        Callback = function(Options)
+            local selection = Options and Options[1]
+            if selection == "Stable Version" then
+                KeyModule.ScriptID = "fa4e49b11535d5a034b51e9bfd716abf"
+                pcall(function() KeyModule._api = nil end)
+                Rayfield:Notify({
+                    Title = "Version",
+                    Content = "Stable version selected",
+                    Duration = 3,
+                    Image = "check-circle",
+                })
+            elseif selection == "BETA Version" then
+                KeyModule.ScriptID = "b79c79c96e9c304d48008efe659813bd"
+                pcall(function() KeyModule._api = nil end)
+                Rayfield:Notify({
+                    Title = "Version",
+                    Content = "BETA version selected",
+                    Duration = 3,
+                    Image = "check-circle",
+                })
+            end
+        end,
+    })
+
+    local LoadButton = KeySystemTab:CreateButton({
+        Name = "Load Selected Version",
+        Callback = function()
+            if not isKeyValid then
+                Rayfield:Notify({
+                    Title = "Action Required",
+                    Content = "Validate your key first",
+                    Duration = 3,
+                    Image = "alert-circle",
+                })
+                return
+            end
+            local ok = pcall(function()
+                getgenv().script_key = keyInputValue
+                local scriptId = KeyModule.ScriptID
+                local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
+                api.script_id = scriptId
+                api.load_script()
+            end)
+            if ok then
+                Rayfield:Destroy()
+            else
+                Rayfield:Notify({
+                    Title = "Load Failed",
+                    Content = "Unable to load the selected version",
+                    Duration = 4,
+                    Image = "x-circle",
+                })
+            end
+        end,
+    })
+end
+
 local KeySection = KeySystemTab:CreateSection("Key Validation")
 
 local KeyInput = KeySystemTab:CreateInput({
@@ -151,22 +217,29 @@ local ValidateButton = KeySystemTab:CreateButton({
                 
                 saveKeyToFile(keyInputValue)
                 
-                task.wait(2)
-                
-                print("Loading script directly...")
-                getgenv().script_key = keyInputValue
-                local scriptId = KeyModule.ScriptID
-                pcall(function()
-                    local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-                    api.script_id = scriptId
-                    print("Using script ID:", scriptId)
-                    print("Using key:", string.sub(keyInputValue, 1, 5) .. "...")
-                    api.load_script()
-                    print("Script loaded successfully!")
-                end)
-                
-                task.wait(2)
-                Rayfield:Destroy()
+                if not isBlair then
+                    task.wait(2)
+                    print("Loading script directly...")
+                    getgenv().script_key = keyInputValue
+                    local scriptId = KeyModule.ScriptID
+                    pcall(function()
+                        local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
+                        api.script_id = scriptId
+                        print("Using script ID:", scriptId)
+                        print("Using key:", string.sub(keyInputValue, 1, 5) .. "...")
+                        api.load_script()
+                        print("Script loaded successfully!")
+                    end)
+                    task.wait(2)
+                    Rayfield:Destroy()
+                else
+                    Rayfield:Notify({
+                        Title = "Ready",
+                        Content = "Key validated. Choose a version and press Load",
+                        Duration = 5,
+                        Image = "info",
+                    })
+                end
             else
                 Rayfield:Notify({
                     Title = "Error",
@@ -275,20 +348,31 @@ if savedKey then
                 Duration = 5,
                 Image = "check-circle",
             })
-            task.wait(2.5)
-            Rayfield:Destroy()
-            task.wait(2)
-            print("Loading script directly...")
-            getgenv().script_key = savedKey
-            local scriptId = KeyModule.ScriptID
-            pcall(function()
-                local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-                api.script_id = scriptId
-                print("Using script ID:", scriptId)
-                print("Using key:", string.sub(savedKey, 1, 5) .. "...")
-                api.load_script()
-                print("Script loaded successfully!")
-            end)
+            if not isBlair then
+                task.wait(2.5)
+                Rayfield:Destroy()
+                task.wait(2)
+                print("Loading script directly...")
+                getgenv().script_key = savedKey
+                local scriptId = KeyModule.ScriptID
+                pcall(function()
+                    local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
+                    api.script_id = scriptId
+                    print("Using script ID:", scriptId)
+                    print("Using key:", string.sub(savedKey, 1, 5) .. "...")
+                    api.load_script()
+                    print("Script loaded successfully!")
+                end)
+            else
+                isKeyValid = true
+                StatusLabel:Set("Status: Key validated. Choose version and press Load.", "info")
+                Rayfield:Notify({
+                    Title = "Ready",
+                    Content = "Key validated. Choose a version and press Load",
+                    Duration = 5,
+                    Image = "info",
+                })
+            end
         else
             delkey()
             KeyInput:Set("")
