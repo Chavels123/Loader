@@ -105,9 +105,14 @@ local InfoTab = Window:CreateTab("Info", "info")
 local keyInputValue = ""
 local isKeyValid = false
 
-local isBlair = (game.PlaceId == 6137321701) or (game.PlaceId == 6348640020)
-if isBlair then
+local isManualLoadGame = (game.PlaceId == 6137321701) or (game.PlaceId == 6348640020) or (game.PlaceId == 111989938562194)
+if isManualLoadGame then
     local VersionSection = KeySystemTab:CreateSection("Version")
+    local VersionIdsByPlaceId = {
+        [6137321701] = { Stable = "fa4e49b11535d5a034b51e9bfd716abf", Beta = "b79c79c96e9c304d48008efe659813bd" },
+        [6348640020] = { Stable = "fa4e49b11535d5a034b51e9bfd716abf", Beta = "b79c79c96e9c304d48008efe659813bd" },
+        [111989938562194] = { Stable = "2653400a353d057c2bb96eb410da97a9", Beta = "7718627eedfb9ceab9f44e63401010e4" },
+    }
     local VersionDropdown = KeySystemTab:CreateDropdown({
         Name = "Select Version",
         Options = {"Stable Version","BETA Version"},
@@ -116,9 +121,12 @@ if isBlair then
         Flag = "PulseHub_Version",
         Callback = function(Options)
             local selection = Options and Options[1]
+            local versions = VersionIdsByPlaceId[game.PlaceId]
             if selection == "Stable Version" then
-                KeyModule.ScriptID = "fa4e49b11535d5a034b51e9bfd716abf"
-                pcall(function() KeyModule._api = nil end)
+                if versions and versions.Stable then
+                    KeyModule.ScriptID = versions.Stable
+                    pcall(function() KeyModule._api = nil end)
+                end
                 Rayfield:Notify({
                     Title = "Version",
                     Content = "Stable version selected",
@@ -126,8 +134,10 @@ if isBlair then
                     Image = "check-circle",
                 })
             elseif selection == "BETA Version" then
-                KeyModule.ScriptID = "b79c79c96e9c304d48008efe659813bd"
-                pcall(function() KeyModule._api = nil end)
+                if versions and versions.Beta then
+                    KeyModule.ScriptID = versions.Beta
+                    pcall(function() KeyModule._api = nil end)
+                end
                 Rayfield:Notify({
                     Title = "Version",
                     Content = "BETA version selected",
@@ -217,7 +227,7 @@ local ValidateButton = KeySystemTab:CreateButton({
                 
                 saveKeyToFile(keyInputValue)
                 
-                if not isBlair then
+                if not isManualLoadGame then
                     task.wait(2)
                     print("Loading script directly...")
                     getgenv().script_key = keyInputValue
@@ -259,11 +269,11 @@ KeySystemTab:CreateDivider()
 local GetKeySection = KeySystemTab:CreateSection("Get Key Options")
 
 local GetKeyLinkvertiseButton = KeySystemTab:CreateButton({
-    Name = "Get Key (Lockr.so)",
+    Name = "Get Key (Linkvertise)",
     Callback = function()
         Rayfield:Notify({
             Title = "Generating Link",
-            Content = "Creating key link via Lockr.so...",
+            Content = "Creating key link via Linkvertise...",
             Duration = 2,
             Image = "link",
         })
@@ -348,7 +358,7 @@ if savedKey then
                 Duration = 5,
                 Image = "check-circle",
             })
-            if not isBlair then
+            if not isManualLoadGame then
                 task.wait(2.5)
                 Rayfield:Destroy()
                 task.wait(2)
