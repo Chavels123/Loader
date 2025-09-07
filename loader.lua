@@ -105,13 +105,15 @@ local InfoTab = Window:CreateTab("Info", "info")
 local keyInputValue = ""
 local isKeyValid = false
 
-local isManualLoadGame = (game.PlaceId == 6137321701) or (game.PlaceId == 6348640020) or (game.PlaceId == 111989938562194)
+local isManualLoadGame = (game.PlaceId == 6137321701) or (game.PlaceId == 6348640020) or (game.PlaceId == 111989938562194) or (game.PlaceId == 126509999114328) or (game.PlaceId == 79546208627805)
 if isManualLoadGame then
     local VersionSection = KeySystemTab:CreateSection("Version")
     local VersionIdsByPlaceId = {
         [6137321701] = { Stable = "fa4e49b11535d5a034b51e9bfd716abf", Beta = "b79c79c96e9c304d48008efe659813bd" },
         [6348640020] = { Stable = "fa4e49b11535d5a034b51e9bfd716abf", Beta = "b79c79c96e9c304d48008efe659813bd" },
         [111989938562194] = { Stable = "2653400a353d057c2bb96eb410da97a9", Beta = "7718627eedfb9ceab9f44e63401010e4" },
+        [126509999114328] = { Stable = "0bc73c28f738300dbd3d4b99e5daf4f3", Beta = "e3e0c2382cb62a436040f422e0d7d428" },
+        [79546208627805] = { Stable = "0bc73c28f738300dbd3d4b99e5daf4f3", Beta = "e3e0c2382cb62a436040f422e0d7d428" },
     }
     local VersionDropdown = KeySystemTab:CreateDropdown({
         Name = "Select Version",
