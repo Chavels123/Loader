@@ -3,6 +3,17 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
+
+local DemonologyGameIds = {
+    [18794863104] = true,
+    [18199615050] = true
+}
+
+if DemonologyGameIds[game.PlaceId] then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Chavels123/Newloader/refs/heads/main/newloader.lua"))()
+    return
+end
+
 local GameName = ""
 
 local GameIds = {
