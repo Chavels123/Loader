@@ -8,7 +8,10 @@ local CustomLoaderGameIds = {
     [18794863104] = true,
     [18199615050] = true,
     [6137321701] = true,
-    [6348640020] = true
+    [6348640020] = true,
+    [9285238704] = true,
+    [75366259315586] = true,
+    [111989938562194] = true
 }
 
 if CustomLoaderGameIds[game.PlaceId] then
