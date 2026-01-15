@@ -28,6 +28,7 @@ local GameIds = {
     [90462358603255] = "Anime Enternal",
     [122826953758426] = "Raise A Animals",
     [121864768012064] = "Fish It",
+    [123557829667240] = "Chop your tree",
 }
 
 GameName = GameIds[game.PlaceId] or "Universal"
